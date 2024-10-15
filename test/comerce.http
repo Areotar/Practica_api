@@ -1,0 +1,38 @@
+# Aqui se obtienen todos los datos de la tabla tal y como estan.
+GET http://localhost:3000/api/comerce HTTP/1.1
+###
+# Obtener la lista de comercios y, opcionalmente (vía parámetro query,) ordenados por el CIF ascendentemente.
+GET http://localhost:3000/api/comerce?sortBycif=true
+###
+# Obtener un comercio por su CIF
+GET http://localhost:3000/api/comerce/test3 HTTP/1.1
+###
+# Guardar un comercio
+POST http://localhost:3000/api/comerce HTTP/1.1
+Content-Type:application/json
+
+{   
+    "name": "prueba2",
+    "cif": "test2",
+    "direccion": "test2",
+    "email": "test2",
+    "telefono": "test2",
+    "id_web": 2
+}
+###
+
+# Modificar un comercio a partir de su CIF
+PUT http://localhost:3000/api/comerce/test2 HTTP/1.1
+Content-Type:application/json
+
+{
+    "name": "prueba_dos",
+    "cif": "test2",
+    "direccion": "test2",
+    "email": "test2",
+    "telefono": "test2",
+    "id_web": 2
+}
+###
+# Borrar un comercio a partir de su CIF
+DELETE http://localhost:3000/api/comerce/test2 HTTP/1.1
