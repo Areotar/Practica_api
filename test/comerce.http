@@ -17,7 +17,7 @@ Content-Type:application/json
     "direccion": "test2",
     "email": "test2",
     "telefono": "test2",
-    "id_web": 2
+    "id_web": 2 
 }
 ###
 

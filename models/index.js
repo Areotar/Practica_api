@@ -3,5 +3,6 @@
 
 const models = {
     ComerceModel: require('./comerce'),
+    websModel: require('./web.js'),
 }
 module.exports = models
