@@ -69,3 +69,25 @@ todos las webpages: GET de uno, POST, PUT, DELETE y PATCH para subir una imagen)
 (1 punto)
 
 Súbelo a un repositorio de tu GitHub y comparte el enlace
+
+
+# Practica Api 3
+
+Sobre el API de las prácticas anteriores:
+
+Crea un nuevo modelo con mongoose para usuarios con, al menos, los siguientes campos:
+Nombre
+E-mail  (debe ser único)
+Password (en la base de datos se guardará hasheado)
+Edad
+Ciudad
+Intereses (será un array de intereses)
+PermiteRecibirOfertas (boolean)
+Role (que será user o admin, user será el de por defecto, este campo no se envía  en el POST al crear el usuario)
+
+Permite registrar usuarios y hacer login (devolviendo un JWT con su id). Con el JWT ahora podrá modificar los datos del usuario creado (excepto el role). Crea un validador tanto para la creación como para la actualización. El usuario también podrá borrarse de la base de datos (solo a él mismo, no a otros usuarios).
+La creación, edición y visualización del comercio,solo podrá hacerla un admin (crea un usuario con una petición POST y modifica el rol en la base de datos). Al crear el comercio por el admin, se devolverá un JWT que contendrá en el payload (en los datos del JWT) un  identificador único (por ejemplo, el CIF del comercio o el e-mail). Guarda este token para que las siguientes peticiones que pueda hacer el comercio. Cada comercio tiene su propio JWT.
+Un comercio puede crear su propia webpage (relación 1:1), también puede modificarla y borrarla (solo su propia página). También podrá subir imágenes y textos a su webpage (PATCH).  El comercio también podrá ver los emails de los usuarios interesados en su actividad y que tengan permitirRecibirOfertas a true
+ Si hubiese cualquier error de servidor, se enviará un mensaje al Slack del webadmin. 
+Documenta con Swagger todos los endpoints (rutas).
+Opcional: Crea las pruebas con JEST para cada endpoint (en la práctica final, tendrás que hacerlo de manera obligatoria)
