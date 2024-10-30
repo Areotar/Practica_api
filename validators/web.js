@@ -9,6 +9,7 @@ const validatorGetItem = [
 ]
 
 const validatorCreateItem = [
+    check("cif").exists().notEmpty(),
     check("ciudad").exists().notEmpty(),
     check("actividad").exists().notEmpty(), //.isLength(min:5, max:90)
     check("titulo").exists().notEmpty(),
@@ -27,6 +28,7 @@ const validatorUpdateItem = [
     (req, res, next) => {
         return validateResults(req, res, next)
     },
+    check("cif").exists().notEmpty(),
     check("ciudad").exists().notEmpty(),
     check("actividad").exists().notEmpty(), 
     check("titulo").exists().notEmpty(),

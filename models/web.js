@@ -4,6 +4,10 @@ const mongooseDelete = require("mongoose-delete")
 const mongoose = require("mongoose")
 const webScheme = new mongoose.Schema(
     {
+        cif: {
+            type: String,
+            unique: true
+        }, 
         ciudad: {
             type: String
         },  

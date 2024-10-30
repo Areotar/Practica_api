@@ -4,5 +4,6 @@
 const models = {
     ComerceModel: require('./comerce'),
     websModel: require('./web.js'),
+    usersModel: require("./users.js")
 }
 module.exports = models

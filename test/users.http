@@ -1,0 +1,59 @@
+GET http://localhost:3000/api/users HTTP/1.1
+###
+GET http://localhost:3000/api/users/670414fa0502e956d64a659b HTTP/1.1
+###
+
+# Crear un usuario a traves del register
+POST http://localhost:3000/api/auth/register HTTP/1.1
+Content-Type:application/json
+
+{
+  "nombre": "paco",
+  "email": "paco@example.com",
+  "password": "1234",
+  "edad": 30,
+  "ciudad": "Madrid",
+  "intereses": ["lectura", "viajar", "programación"],
+  "ofertas": true,
+  "role": "user"
+}
+###
+POST http://localhost:3000/api/auth/register HTTP/1.1
+Content-Type:application/json
+
+{
+  "nombre": "juan",
+  "email": "juan@example.com",
+  "password": "123",
+  "edad": 30,
+  "ciudad": "Madrid",
+  "intereses": ["lectura", "viajar", "programación"],
+  "ofertas": true,
+  "role": "admin"
+}
+###
+
+# Logear al usuario
+POST http://localhost:3000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+ "email": "juan@example.com",
+ "password": "123"
+}
+###
+
+# El usuario se elimina a si mismo
+DELETE http://localhost:3000/api/auth/671b4b26a268c3980777799c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJjaWYiOm51bGwsImlhdCI6MTczMDI3NDA0MSwiZXhwIjoxNzMwMzYwNDQxfQ.xSdGuAUzqZ8eAkd31GDfPrQQz4FQjWAMF6qJLYrguEs
+###
+
+# Cambiar uno existente, por el mismo usuario
+PATCH http://localhost:3000/api/auth/671cadb996809233bc9a9db9 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJjaWYiOm51bGwsImlhdCI6MTczMDIwMjg3MSwiZXhwIjoxNzMwMjg5MjcxfQ.s78Ow-qw108q64bfu8yE6-hPcfC-1zz6gE8L1A1AY3U
+
+{
+    "nombre":"juan"
+}
+###

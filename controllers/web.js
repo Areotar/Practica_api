@@ -1,4 +1,5 @@
 const {websModel} = require("../models")
+const {usersModel} = require("../models")
 const { handleHttpError } = require('../utils/handleError.js')
 const { matchedData } = require('express-validator')
 
@@ -10,6 +11,22 @@ const getItems = async (req, res) => {
         res.send({data}) // user <==Esto es para comprobar que funciona
     }catch(err){
         console.log(err)
+    }
+}
+
+// Hace un get de los usuario sinteresados en la web que hayan admitido spam
+const getUsers = async (req, res) => {
+    try{
+        const cif = req.params.cif
+        const web = await websModel.findOne({cif});
+        const actividad = web.actividad
+        // Busca los usuarios que permitan recibir ofertas y tengan interes en la actividad de la web
+        const interesados = await usersModel.find({
+                intereses: actividad, ofertas: true,
+            },  "email");
+        res.send(interesados)
+    }catch(err){
+        res.send("ocurrio un error"), console.log(err)
     }
 }
 
@@ -30,10 +47,17 @@ const getItem = async (req, res) => {
 const createItem = async (req, res) => {
     try{
         // Recibe los datos que debe subir y sube el objeto a la base de datos.
+        const comerce = req.body.cif
         const body = matchedData(req)
         const data = await websModel.create(body)
+        const {cif} = matchedData(req)
+        // console.log(cif, comerce)
+        if (cif !== comerce) {
+            return res.status(403).send("No puedes crear una web con el cif de otro usuario");
+        }
         res.send(data)
     }catch(err){
+        console.log(err)
         handleHttpError(res, 'ERROR_CREATE_ITEMS')
     }
 }
@@ -42,10 +66,16 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
     try{
         const {id, ...body} = matchedData(req) //Extrae el id y el resto lo asigna a la constante body
-        const data = await websModel.findByIdAndUpdate(id, body, {new:true});  
+        const data = await websModel.findByIdAndUpdate(id, body, {new:true});
+        const {cif} = matchedData(req)
+        const comerce = req.body.cif
+
+        if (cif !== comerce) {
+            return res.status(403).send("No puedes modificar una web con el cif de otro usuario");
+        }
         res.send(data)
     }catch(err){
-        // console.log(err)
+        console.log(err)
         handleHttpError(res, 'ERROR_UPDATE_ITEMS', 403)
     }
 }
@@ -54,7 +84,13 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
     try {
         const {id} = matchedData(req)
-         const { logic } = req.query
+        const {cif} = matchedData(req)
+        const { logic } = req.query
+        const comerce = req.body.cif
+        
+        if (cif !== comerce) {
+            return res.status(403).send("No puedes borrar una web con el cif de otro usuario");
+        }
         // Condicion para que el borrado sea logico
         if (logic == "true"){
             const data = await websModel.delete({_id:id});
@@ -72,8 +108,14 @@ const deleteItem = async (req, res) => {
 // Funcion para actualizar un objeto
 const patchItem = async (req, res) => {
     try{
+        const {cif} = matchedData(req)
         const { id } = req.params;
         const { file } = req;
+        const comerce = req.body.cif
+        console.log(cif, comerce)
+        if (cif !== comerce) {
+            return res.status(403).send("No puedes crear una web con el cif de otro usuario");
+        }
 
         const fileData = {
             filename: file.filename,
@@ -97,5 +139,5 @@ const patchItem = async (req, res) => {
 module.exports = {
     getItems, getItem,
     createItem, updateItem,
-    deleteItem, patchItem
+    deleteItem, patchItem, getUsers
 };
