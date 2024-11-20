@@ -81,8 +81,8 @@ router.delete("/:id", authMiddleware, deleteCtrl)
  *      tags:
  *      - Auth
  *      summary: Patch user
- *      description: Patch a user by 
- *      parametersthe same user:
+ *      description: Patch a user by cif
+ *      parameters the same user:
  *          -   name: id
  *              in: path
  *              description: id that need to be updated

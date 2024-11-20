@@ -1,15 +1,53 @@
-// En este archivo se definen las rutas y la funcion de cada una.
-const { validatorCreateItem } = require("../validators/comerce")
-const { validatorGetItem } = require("../validators/comerce")
-const { validatorUpdateItem } = require("../validators/comerce")
-const { validatorDeleteItem } = require("../validators/comerce")
-const authMiddleware = require("../middleware/session")
 const express = require("express");
-const router = express.Router()
-const checkRol = require("../middleware/rol")
-const {getItems, getItem, createItem, updateItem, deleteItem} = require("../controllers/comerce")
+const router = express.Router();
+
+// Validadores y controladores
+const { 
+    validatorCreateItem, 
+    validatorGetItem, 
+    validatorUpdateItem, 
+    validatorDeleteItem, 
+    validatorMail 
+} = require("../validators/comerce");
+
+const { 
+    getItems, 
+    getItem, 
+    createItem, 
+    updateItem, 
+    deleteItem, 
+    send 
+} = require("../controllers/comerce");
+
+// Middlewares
+const authMiddleware = require("../middleware/session");
+const checkRol = require("../middleware/rol");
 
 // router.post("/", validatorCreateItem, customHeader, createItem)
+
+/**
+ * @openapi
+ * /mail:
+ *  post:
+ *      tags:
+ *      - Correo
+ *      summary: Enviar un correo electrónico
+ *      description: Envía un correo electrónico con autenticación.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *      responses:
+ *          '200':
+ *              description: Correo enviado
+ *          '500':
+ *              description: Error del servidor
+ *      security:
+ *          - bearerAuth: []
+ */
+router.post("/mail", authMiddleware, validatorMail, send);
 
 /**
  * @openapi
@@ -36,13 +74,22 @@ router.get("/", authMiddleware, checkRol("admin"), getItems)
  *  get:
  *      tags:
  *      - Comerce
- *      summary: Get comerce del sistema por el cif
- *      description: 'solo un admin puede acceder a los comercios'
+ *      summary: Get comerce por cif
+ *      description: Solo un admin puede acceder a estos datos
+ *      parameters:
+ *          -   name: cif
+ *              in: path
+ *              description: CIF del comercio
+ *              required: true
+ *              schema:
+ *                  type: string
  *      responses:
  *          '200':
- *              description: Returns the users
+ *              description: Returns the comerce
+ *          '404':
+ *              description: comerce not found
  *          '500':
- *              description: Server error
+ *              description: server error
  *      security:
  *          - bearerAuth: []
  */
@@ -103,24 +150,28 @@ router.put("/:cif", validatorUpdateItem, authMiddleware, checkRol("admin"), upda
 
 /**
  * @openapi
- * /api/comerce/{id}:
+ * /api/comerce/{cif}:
  *  delete:
  *      tags:
  *      - Comerce
- *      summary: Delete user
- *      description: Delete a comerce by the cif
+ *      summary: Delete a comerce
+ *      description: Elimina un comercio del sistema por su CIF. Solo un administrador puede hacerlo
  *      parameters:
- *          -   name: id
+ *          -   name: cif
  *              in: path
- *              description: id that need to be deleted
+ *              description: CIF del comercio que se desea eliminar
  *              required: true
  *              schema:
  *                  type: string
  *      responses:
  *          '200':
- *              description: Returns the status
- *          '401':
- *              description: Validation error
+ *              description: Comerce deleted
+ *          '404':
+ *              description: Comerce not found
+ *          '500':
+ *              description: server error
+ *      security:
+ *          - bearerAuth: []
  */
 router.delete("/:cif", validatorDeleteItem, authMiddleware, deleteItem)
 

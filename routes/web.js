@@ -4,29 +4,51 @@ const { validatorCreateItem } = require("../validators/web")
 const { validatorGetItem } = require("../validators/web")
 const { validatorUpdateItem } = require("../validators/web")
 const { validatorDeleteItem } = require("../validators/web")
+const { validatorPatchReseña } = require("../validators/web")
 const uploadMiddleware = require("../utils/handleStorage");
-const {getItems, getItem, createItem, updateItem, deleteItem, patchItem, getUsers} = require("../controllers/web");
+const {getItems, getItem, createItem, updateItem, deleteItem, patchItem, getUsers, patchReseña} = require("../controllers/web");
 const authMiddleware = require("../middleware/session");
+const {uploadMiddlewareMemory} = require("../utils/handleStorage.js")
 
 
+/**
+ * @openapi
+ * /buscador:
+ *  get:
+ *      tags:
+ *      - Web
+ *      summary: Obtener elementos mediante búsqueda
+ *      description: Devuelve una lista de elementos en base a los parámetros de búsqueda.
+ *      responses:
+ *          '200':
+ *              description: Lista de elementos obtenida
+ *          '500':
+ *              description: Error del servidor
+ */
+router.get("/buscador", getItems);
 
-// router.get("/:id", getItem)
-// router.get("/", validatorGetItem, getItems)
 /**
  * @openapi
  * /api/web/{id}:
  *  get:
  *      tags:
  *      - Web
- *      summary: Get web del sistema por el id
- *      description: ''
+ *      summary: Obtener una web específica por ID
+ *      description: Devuelve una web con base en el ID proporcionado.
+ *      parameters:
+ *          - name: id
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: string
+ *            description: ID de la web a obtener
  *      responses:
  *          '200':
- *              description: Returns the users
+ *              description: Web obtenida exitosamente
  *          '500':
- *              description: Server error
+ *              description: Error del servidor
  */
-router.get("/:id",validatorGetItem, authMiddleware, getItem)
+router.get("/:id",validatorGetItem, getItem)
 
 /**
  * @openapi
@@ -34,13 +56,20 @@ router.get("/:id",validatorGetItem, authMiddleware, getItem)
  *  get:
  *      tags:
  *      - Comerce
- *      summary: Get de los usuarios que tienen interes en la empresa
- *      description: 'Las empresan accenden a los emails de los usuarios interesados'
+ *      summary: Obtener usuarios interesados en una empresa
+ *      description: Las empresas pueden acceder a los emails de los usuarios interesados.
+ *      parameters:
+ *          - name: cif
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: string
+ *            description: CIF de la empresa
  *      responses:
  *          '200':
- *              description: Returns the users
+ *              description: Usuarios interesados obtenidos exitosamente
  *          '500':
- *              description: Server error
+ *              description: Error del servidor
  *      security:
  *          - bearerAuth: []
  */
@@ -55,6 +84,7 @@ router.get("/interes/:cif", authMiddleware, getUsers)
  *      summary: Create a web
  *      description: Registra una nueva web
  *      requestBody:
+ *          required: true
  *          content:
  *              application/json:
  *                  schema:
@@ -73,25 +103,26 @@ router.post("/", validatorCreateItem, authMiddleware, createItem)
  *  put:
  *      tags:
  *      - Web
- *      summary: Update Web
- *      description: Update a Web
+ *      summary: Actualizar una web
+ *      description: Actualiza los datos de una web específica.
  *      parameters:
- *          -   name: id
- *              in: path
- *              description: id that need to be updated
- *              required: true
- *              schema:
- *                  type: string
+ *          - name: id
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: string
+ *            description: ID de la web a actualizar
  *      requestBody:
+ *          required: true
  *          content:
  *              application/json:
  *                  schema:
  *                      $ref: "#/components/schemas/web"
  *      responses:
  *          '200':
- *              description: Returns the inserted object
+ *              description: Web actualizada exitosamente
  *          '401':
- *              description: Validation error
+ *              description: Error de validación
  */
 router.put("/:id", validatorUpdateItem, authMiddleware, updateItem)
 
@@ -101,22 +132,51 @@ router.put("/:id", validatorUpdateItem, authMiddleware, updateItem)
  *  delete:
  *      tags:
  *      - Web
- *      summary: Delete web
- *      description: Delete a web by the id
+ *      summary: Eliminar una web
+ *      description: Elimina una web específica por su ID.
  *      parameters:
- *          -   name: id
- *              in: path
- *              description: id that need to be deleted
- *              required: true
- *              schema:
- *                  type: string
+ *          - name: id
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: string
+ *            description: ID de la web a eliminar
  *      responses:
  *          '200':
- *              description: Returns the status
+ *              description: Web eliminada exitosamente
  *          '401':
- *              description: Validation error
+ *              description: Error de validación
  */
 router.delete("/:id", validatorDeleteItem, authMiddleware, deleteItem)
+
+/**
+ * @openapi
+ * /comentarios/{id}:
+ *  patch:
+ *      tags:
+ *      - Web
+ *      summary: Actualizar un comentario
+ *      description: Actualiza el contenido de un comentario específico por ID.
+ *      parameters:
+ *          - name: id
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: string
+ *            description: ID del comentario a actualizar
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *      responses:
+ *          '200':
+ *              description: Comentario actualizado con éxito 
+ *          '500':
+ *              description: Error del servidor
+ */
+router.patch("/comentarios/:id", validatorPatchReseña, patchReseña);
 
 /**
  * @openapi
@@ -124,27 +184,28 @@ router.delete("/:id", validatorDeleteItem, authMiddleware, deleteItem)
  *  patch:
  *      tags:
  *      - Web
- *      summary: Patch web
- *      description: Patch a web to add a image, by id
- *      parametersthe same user:
- *          -   name: id
- *              in: path
- *              description: id that need to be updated
- *              required: true
- *              schema:
- *                  type: string
+ *      summary: Añadir una imagen a una web
+ *      description: Actualiza una web específica para añadir una imagen por ID.
+ *      parameters:
+ *          - name: id
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: string
+ *            description: ID de la web a actualizar
  *      requestBody:
+ *          required: true 
  *          content:
  *              application/json:
  *                  schema:
  *                      $ref: "#/components/schemas/web"
  *      responses:
  *          '200':
- *              description: Returns the inserted object
+ *              description: Web actualizada con la imagen
  *          '401':
- *              description: Validation error
+ *              description: Error de validación
  */
-router.patch("/:id", uploadMiddleware.single("image"), authMiddleware, patchItem)
+router.patch("/:id", authMiddleware, uploadMiddlewareMemory.single("image"), patchItem)
 
 
 module.exports = router

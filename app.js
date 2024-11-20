@@ -5,10 +5,13 @@ const { IncomingWebhook } = require("@slack/webhook")
 const loggerStream = require("./utils/handleLogger")
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpecs = require("./docs/swagger")
+const cors = require("cors")
 
 
 require('dotenv').config();
 const app = express()
+
+app.use(cors())
 
 app.use(express.json())
 
@@ -33,3 +36,5 @@ app.listen(port, () => {
 })
 dbConnect()
 app.use(express.static("storage")) // http://localhost:3000/file.jpg
+
+module.exports = app

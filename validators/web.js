@@ -16,10 +16,6 @@ const validatorCreateItem = [
     check("resumen").exists().notEmpty(),
     check("textos").exists().notEmpty(),
     check("imagenes").exists().notEmpty(),
-    check("reseñas").exists().notEmpty(),
-    check("reseñas.scoring").exists().notEmpty().isFloat({ min: 0, max: 5 }),
-    check("reseñas.total").exists().notEmpty().isInt(),
-    check("reseñas.cuerpo").exists().notEmpty(),
     (req, res, next) => validateResults(req, res, next)
 ]
 
@@ -35,10 +31,6 @@ const validatorUpdateItem = [
     check("resumen").exists().notEmpty(),
     check("textos").exists().notEmpty(),
     check("imagenes").exists().notEmpty(),
-    check("reseñas").exists().notEmpty(),
-    check("reseñas.scoring").exists().notEmpty().isFloat({ min: 0, max: 5 }),
-    check("reseñas.total").exists().notEmpty().isInt(),
-    check("reseñas.cuerpo").exists().notEmpty(),
     (req, res, next) => validateResults(req, res, next)
 ]
 
@@ -49,5 +41,13 @@ const validatorDeleteItem = [
     }
 ]
 
+const validatorPatchReseña = [
+    check("id").exists().notEmpty().isMongoId(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    },
+    check("comentario").exists().notEmpty(),
+    (req, res, next) => validateResults(req, res, next)
+]
 
-module.exports = { validatorCreateItem, validatorGetItem, validatorUpdateItem, validatorDeleteItem }
+module.exports = { validatorCreateItem, validatorGetItem, validatorUpdateItem, validatorDeleteItem, validatorPatchReseña}

@@ -1,6 +1,6 @@
 const mongooseDelete = require("mongoose-delete")
 
-// Es el modelo de datos del comercio.
+// Es el modelo de datos de la web del comercio.
 const mongoose = require("mongoose")
 const webScheme = new mongoose.Schema(
     {
@@ -31,14 +31,17 @@ const webScheme = new mongoose.Schema(
         reseñas: {
             scoring: {
                 type: Number,
+                default: 0,
                 min: 0,
-                max: 5,
+                max: 5
             },
             total: {
-                type: Number
+                type: Number,
+                default:0
             },
             cuerpo: {
-                type: String
+                type: [String],
+                default: []
             }
         }
         },

@@ -39,4 +39,13 @@ const validatorDeleteItem = [
     }
 ]
 
-module.exports = { validatorCreateItem, validatorGetItem, validatorUpdateItem, validatorDeleteItem }
+const validatorMail = [
+    check("subject").exists().notEmpty(),
+    check("text").exists().notEmpty(),
+    check("to").exists().notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
+module.exports = { validatorCreateItem, validatorGetItem, validatorUpdateItem, validatorDeleteItem, validatorMail }

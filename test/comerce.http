@@ -1,6 +1,6 @@
 # Aqui se obtienen todos los datos de la tabla tal y como estan.
 GET http://localhost:3000/api/comerce HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJpYXQiOjE3MzAwMjE2NzgsImV4cCI6MTczMDEwODA3OH0.M4yeLHijNaum_mcRA3u5UFEDiOsOwRAuEIn09l8pouA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzMTdjYmRjNTVkOTEzZjI3YjJhNDkiLCJjaWYiOm51bGwsImlhdCI6MTczMTQxMDA4OCwiZXhwIjoxNzMxNDk2NDg4fQ.N81Abgiwn7jVV_8lvTvCozqwnivQq53pDZY9410EV4A
 ###
 
 # Obtener la lista de comercios y, opcionalmente (vía parámetro query,) ordenados por el CIF ascendentemente.
@@ -9,33 +9,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiO
 ###
 
 # Obtener un comercio por su CIF
-GET http://localhost:3000/api/comerce/test3 HTTP/1.1
+GET http://localhost:3000/api/comerce/test1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJpYXQiOjE3MzAwMjE2NzgsImV4cCI6MTczMDEwODA3OH0.M4yeLHijNaum_mcRA3u5UFEDiOsOwRAuEIn09l8pouA
 ###
 
 # Crear un comercio y su token (token test 1)
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOm51bGwsImNpZiI6InRlc3QxIiwiaWF0IjoxNzMwMjc0NTk3LCJleHAiOjE3NjE4MzIxOTd9.Dojo5P8vgsW0Iu95r_-C1BdBjBZRJAhzCZXsGvnRx3A
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOm51bGwsImNpZiI6InRlc3QxIiwiaWF0IjoxNzMxNDEyMzk0LCJleHAiOjE3NjI5Njk5OTR9.URtTk29txJvHIbDz-8SunfO_tpUyzjOLXS7FGx9FY3Y
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOm51bGwsImNpZiI6InRlc3QyIiwiaWF0IjoxNzMwODA1NDAyLCJleHAiOjE3NjIzNjMwMDJ9.CDrpYlfOAYKgncDtX2JjnDCy0pbS1x-2UrxURUSmaWw
 POST http://localhost:3000/api/comerce HTTP/1.1
 Content-Type:application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJjaWYiOm51bGwsImlhdCI6MTczMDI3MzYyMywiZXhwIjoxNzMwMzYwMDIzfQ.IlTf4r6MjzOli5pWHIrWlhHY32_DgjT-oX7q25_ypRQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzMTdjYmRjNTVkOTEzZjI3YjJhNDkiLCJjaWYiOm51bGwsImlhdCI6MTczMjAwOTcwNiwiZXhwIjoxNzMyMDk2MTA2fQ.oPxBvoLw5UdgpF1OQchd4DOjaTrlLp9u57ajuSkMlkM
 
 {   
-    "name": "prueba1",
-    "cif": "test1",
-    "direccion": "test1",
-    "email": "test1",
-    "telefono": "test1",
-    "id_web": 1 
+    "name": "prueba5",
+    "cif": "test5",
+    "direccion": "test5",
+    "email": "test5",
+    "telefono": "test5",
+    "id_web": 5 
 }
 ###
 
 # Modificar un comercio a partir de su CIF
 PUT http://localhost:3000/api/comerce/test2 HTTP/1.1
 Content-Type:application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJpYXQiOjE3MzAwMjE2NzgsImV4cCI6MTczMDEwODA3OH0.M4yeLHijNaum_mcRA3u5UFEDiOsOwRAuEIn09l8pouA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzMTdjYmRjNTVkOTEzZjI3YjJhNDkiLCJjaWYiOm51bGwsImlhdCI6MTczMTQxMDA4OCwiZXhwIjoxNzMxNDk2NDg4fQ.N81Abgiwn7jVV_8lvTvCozqwnivQq53pDZY9410EV4A
 
 {
-    "name": "prueba_dos",
+    "name": "prueba2",
     "cif": "test2",
     "direccion": "test2",
     "email": "test2",
@@ -44,5 +45,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiO
 }
 ###
 # Borrar un comercio a partir de su CIF
-DELETE http://localhost:3000/api/comerce/test2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOm51bGwsImNpZiI6InRlc3QxIiwiaWF0IjoxNzMwMjc2NzM1LCJleHAiOjE3NjE4MzQzMzV9.EPXYOX5e3Y5tPM_xmnAd7KlZ2Dxdsbyb6MX__MnF9Es
+DELETE http://localhost:3000/api/comerce/test3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzMTdjYmRjNTVkOTEzZjI3YjJhNDkiLCJjaWYiOm51bGwsImlhdCI6MTczMTQxMDA4OCwiZXhwIjoxNzMxNDk2NDg4fQ.N81Abgiwn7jVV_8lvTvCozqwnivQq53pDZY9410EV4A

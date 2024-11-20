@@ -1,0 +1,10 @@
+POST http://localhost:3000/api/comerce/mail HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFjYWRiOTk2ODA5MjMzYmM5YTlkYjkiLCJjaWYiOm51bGwsImlhdCI6MTczMTE0OTYxNywiZXhwIjoxNzMxMjM2MDE3fQ.2XouU_aLdgupCp_TJXGJlne_LDRYgbe-rBjDctQtZnI
+
+{
+ "subject": "ola",
+ "text": "https://pbs.twimg.com/media/GHWuKImXUAAWxcz.jpg:large",
+ "to": "alejandro.reoyo.ceb@immune.institute"
+}
+###
