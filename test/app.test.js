@@ -1,5 +1,8 @@
 const request = require('supertest')
 const app = require('../app')
+var cifweb = ""
+var commerceToken = ""
+
 describe('users', () => {
     let token = ""
     let id = ""
@@ -60,9 +63,9 @@ describe('users', () => {
 
 describe('comerce', () => {
     // Cambiar cuando caduca
-    const adminToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzMTdjYmRjNTVkOTEzZjI3YjJhNDkiLCJjaWYiOm51bGwsImlhdCI6MTczMjA5ODg5MCwiZXhwIjoxNzMyMTg1MjkwfQ.18YBMk_IrxSgzastur2w0JAGuj4y_ldkOsaIVL5ZkMQ"
+    const adminToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMxZjJjM2EwMTFiM2RjNTVjODA4MWUiLCJjaWYiOm51bGwsImlhdCI6MTczMjU1MDYwNSwiZXhwIjoxNzMyNjM3MDA1fQ.jUkFPu47qllhpvCIRkIhgsNO5oD2E2GnDf4NR69R9is"
     let cif = ""
-    let commerceToken = ""
+    
 
 
     it('should retrieve all commerces', async () => {
@@ -148,10 +151,9 @@ describe('comerce', () => {
 
 describe('web', () => {
     // No caduca
-    const comercetoken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOm51bGwsImNpZiI6InRlc3Q1IiwiaWF0IjoxNzMyMDE1NDQ3LCJleHAiOjE3NjM1NzMwNDd9.e2XH1Y6RxX4-ST8oIPvHQqtw6isuT9_p-aqMEahWDoQ"
+    const permanentcomercetoken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOm51bGwsImNpZiI6InRlc3Q1IiwiaWF0IjoxNzMyMjA4MzA4LCJleHAiOjE3NjM3NjU5MDh9.U8KEq2wG5CcL20Xw_8rH6BM4fQhmQM_2rLvp739hVgA"
     // Cambiar cuando caduca
-    const admintoken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzMTdjYmRjNTVkOTEzZjI3YjJhNDkiLCJjaWYiOm51bGwsImlhdCI6MTczMjA5ODg5MCwiZXhwIjoxNzMyMTg1MjkwfQ.18YBMk_IrxSgzastur2w0JAGuj4y_ldkOsaIVL5ZkMQ"
-    let idweb = ""
+    const admintoken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMxZjJjM2EwMTFiM2RjNTVjODA4MWUiLCJjaWYiOm51bGwsImlhdCI6MTczMjU1MDYwNSwiZXhwIjoxNzMyNjM3MDA1fQ.jUkFPu47qllhpvCIRkIhgsNO5oD2E2GnDf4NR69R9is"
 
     it('should create a new web entry for a commerce', async () => {
         const newWebData = {
@@ -175,10 +177,13 @@ describe('web', () => {
             .set('Content-Type', 'application/json')
             .send(newWebData)
             .expect(200);
-            idweb = (response.body._id)
+            cifweb = (response.body.cif)
+
+            
 
         console.log("cif de la web:", response.body.cif)
         console.log("Nueva entrada web creada:", response.body);
+
     })
 
     it('should return webs that match the filters', async () => {
@@ -217,7 +222,7 @@ describe('web', () => {
     it('should return interested users for a valid CIF', async () => {
         const response = await request(app)
             .get('/api/web/interes/test1')
-            .set('Authorization', `Bearer ${comercetoken}`)
+            .set('Authorization', `Bearer ${permanentcomercetoken}`)
             .expect(200);
 
         expect(Array.isArray(response.body)).toBe(true);
@@ -245,8 +250,8 @@ describe('web', () => {
         };
 
         const response = await request(app)
-            .put("/api/web/67335bf901572ff0d7962743")
-            .set('Authorization', `Bearer ${comercetoken}`)
+            .put("/api/web/test1")
+            .set('Authorization', `Bearer ${permanentcomercetoken}`)
             .set('Content-Type', 'application/json')
             .send(updateData)
             .expect(200);
@@ -257,19 +262,21 @@ describe('web', () => {
 
     it('should logically delete (archive) a web page', async () => {
 
-        const response = await request(app)
-            .delete(`/api/web/${idweb}?logic=true`)
-            .set('Authorization', `Bearer ${comercetoken}`)
+        console.log("pueba", cifweb, commerceToken)
+        const response = await request(app)    
+            .delete(`/api/web/${cifweb}?logic=true`)
+            .set('Authorization', `Bearer ${permanentcomercetoken}`)
             .expect(200);
-
+        console.log("prueba coño", response.body)
         expect(response.text).toBe("Borrado de manera logica");
     });
 
     it('should physically delete a web page', async () => {
+        console.log("Cif de la web:",cifweb)
 
         const response = await request(app)
-            .delete(`/api/web/${idweb}?logic=false`)
-            .set('Authorization', `Bearer ${comercetoken}`)
+            .delete(`/api/web/${cifweb}?logic=false`)
+            .set('Authorization', `Bearer ${permanentcomercetoken}`)
             .expect(200);
 
         expect(response.text).toBe("Borrado de manera fisica");

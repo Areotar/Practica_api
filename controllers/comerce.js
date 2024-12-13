@@ -95,7 +95,7 @@ const send = async (req, res) => {
         //console.log(err)
         handleHttpError(res, 'ERROR_SEND_EMAIL')
     }
-}
+}   
 
 module.exports = {
     getItems, getItem,

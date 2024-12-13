@@ -1,4 +1,5 @@
 const { check } = require("express-validator")
+const { param } = require('express-validator')
 const validateResults = require("../utils/handleValidator.js")
 
 const validatorGetItem = [
@@ -20,7 +21,6 @@ const validatorCreateItem = [
 ]
 
 const validatorUpdateItem = [
-    check("id").exists().notEmpty().isMongoId(),
     (req, res, next) => {
         return validateResults(req, res, next)
     },
@@ -35,7 +35,7 @@ const validatorUpdateItem = [
 ]
 
 const validatorDeleteItem = [
-    check("id").exists().notEmpty().isMongoId(),
+    param('cif').exists().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)
     }

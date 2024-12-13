@@ -83,9 +83,15 @@ const deleteCtrl = async (req, res) => {
 // Un usuario solo se puede modificar a el mismo
 const patchCtrl = async (req, res) => {
     try {
+        
         const { id } = matchedData(req);
         const body = req.body
         const userId = req.user._id.toString();
+
+        if (body.password) {
+            body.password = await encrypt(body.password);
+        }
+
         // Verifica si es el mismo usuario
         if (id !== userId) {
             return res.status(403).send("No puedes modificar a otros usuarios");

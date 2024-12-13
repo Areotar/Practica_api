@@ -124,7 +124,7 @@ router.post("/", validatorCreateItem, authMiddleware, createItem)
  *          '401':
  *              description: Error de validación
  */
-router.put("/:id", validatorUpdateItem, authMiddleware, updateItem)
+router.put("/:cif", validatorUpdateItem, authMiddleware, updateItem)
 
 /**
  * @openapi
@@ -147,7 +147,7 @@ router.put("/:id", validatorUpdateItem, authMiddleware, updateItem)
  *          '401':
  *              description: Error de validación
  */
-router.delete("/:id", validatorDeleteItem, authMiddleware, deleteItem)
+router.delete("/:cif", validatorDeleteItem, authMiddleware, deleteItem)
 
 /**
  * @openapi
@@ -176,7 +176,7 @@ router.delete("/:id", validatorDeleteItem, authMiddleware, deleteItem)
  *          '500':
  *              description: Error del servidor
  */
-router.patch("/comentarios/:id", validatorPatchReseña, patchReseña);
+router.patch("/comentarios/:id",authMiddleware, validatorPatchReseña, patchReseña);
 
 /**
  * @openapi
@@ -205,7 +205,7 @@ router.patch("/comentarios/:id", validatorPatchReseña, patchReseña);
  *          '401':
  *              description: Error de validación
  */
-router.patch("/:id", authMiddleware, uploadMiddlewareMemory.single("image"), patchItem)
+router.patch("/:cif", authMiddleware, uploadMiddlewareMemory.single("image"), patchItem)
 
 
 module.exports = router

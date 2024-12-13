@@ -14,7 +14,6 @@ const validatorUpdateItem = [
         return validateResults(req, res, next)
     },
     check("name").exists().notEmpty(),
-    check("cif").exists().notEmpty(),
     check("direccion").exists().notEmpty(),
     check("email").exists().notEmpty(),
     check("telefono").exists().notEmpty(),
